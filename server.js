@@ -1,7 +1,6 @@
 var express = require('express')
 var app = express()
-var path = require("path");
-var dinosaurs = require('./dinosaurs')
+var dinosaurs = require('./public/dinosaurs')
 
 app.use('/dinosaurs', dinosaurs)
 

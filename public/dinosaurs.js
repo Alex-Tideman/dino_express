@@ -18,7 +18,7 @@ var dino = {
 // middleware that is specific to this router
 // define the home page route
 router.get('/', function (req, res) {
-  res.sendFile(__dirname + '/public/index.html')
+  res.sendFile(__dirname + '/index.html')
 })
 
 // define the about route
@@ -27,7 +27,7 @@ router.get('/about', function (req, res) {
 })
 
 router.get('/dinoList', function (req, res) {
-   fs.readFile( __dirname + "/" + "/public/dinos.json", 'utf8', function (err, data) {
+   fs.readFile( __dirname + "/" + "/dinos.json", 'utf8', function (err, data) {
        res.send( data );
    });
 })
