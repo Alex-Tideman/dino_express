@@ -1,0 +1,17 @@
+{
+   "dino1" : {
+    "name" : "T-Rex",
+	  "size" : "big",
+	  "id": 1
+   },
+   "dino2" : {
+    "name" : "Iguanodon",
+	  "size" : "medium",
+	  "id": 2
+   },
+   "dino3" : {
+    "name" : "Sinornithosaurus",
+	  "size" : "small",
+	  "id": 3
+   }
+}
