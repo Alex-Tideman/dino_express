@@ -1,14 +1,11 @@
 var express = require('express')
 var router = express.Router()
+var bodyParser = require('body-parser');
 var fs = require('fs')
 var app = express()
 
-var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-
-// app.locals.dinosaurs = []; // NEW!
-app.use(express.static('public'));
 
 var dino = {
    "dino4" : {
@@ -21,7 +18,7 @@ var dino = {
 // middleware that is specific to this router
 // define the home page route
 router.get('/', function (req, res) {
-  res.send('Dinosaurs Home Page')
+  res.sendFile(__dirname + '/public/index.html')
 })
 
 // define the about route
@@ -29,9 +26,8 @@ router.get('/about', function (req, res) {
   res.send('About dinosaurs')
 })
 
-router.get('/listDinos', function (req, res) {
-   fs.readFile( __dirname + "/" + "dinos.json", 'utf8', function (err, data) {
-       console.log( data );
+router.get('/dinoList', function (req, res) {
+   fs.readFile( __dirname + "/" + "/public/dinos.json", 'utf8', function (err, data) {
        res.send( data );
    });
 })
@@ -45,7 +41,8 @@ router.get('/:id', function (req, res) {
 })
 
 router.post('/addDino', function (req, res) {
-  res.send(dino["dino4"])
+  console.log(req.body)
+  res.redirect('/dinosaurs')
 })
 
 var cb1 = function (req, res, next) {
