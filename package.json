@@ -4,7 +4,8 @@
   "description": "Turing Front End Intro to Express",
   "main": "server.js",
   "dependencies": {
-    "body-parser": "^1.15.2"
+    "body-parser": "^1.15.2",
+    "mongoose": "~3.8.11"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
