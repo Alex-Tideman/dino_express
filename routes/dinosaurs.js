@@ -13,68 +13,51 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 router.route('/dinosaurs').get(function(req, res) {
     Dinosaur.find(function(err, dinos) {
-      if (err) {
-        return res.send(err);
-      }
+      (err) ? res.send(err) : res.json(dinos)
+  })
+})
 
-      res.json(dinos);
-  });
-});
+router.route('/about').get(function(req, res) {
+  res.send('About the dinosaurs API. Add, edit and delete dinosaurs.')
+})
+
 
 router.route('/dinosaurs').post(function(req, res) {
   var dinosaur = new Dinosaur(req.body);
 
   dinosaur.save(function(err) {
+    (err) ? res.send(err) : res.send({ message: 'Dinosaur Added' })
+  })
+})
+
+router.route('/dinosaurs/:name').put(function(req,res){
+  Dinosaur.findOne({ name: req.params.name }, function(err, dinosaur) {
     if (err) {
-      return res.send(err);
+     res.send(err)
     }
-
-    res.send({ message: 'Dinosaur Added' });
-  });
-});
-
-router.route('/dinosaurs/:id').put(function(req,res){
-  Dinosaur.findOne({ _id: req.params.id }, function(err, dinosaur) {
-    if (err) {
-      return res.send(err);
-    }
-
+    // Update the params sent
     for (prop in req.body) {
-      dinosaur[prop] = req.body[prop];
+      dinosaur[prop] = req.body[prop]
     }
 
-    // save the dinosaur
+    // Save the dinosaur
     dinosaur.save(function(err) {
-      if (err) {
-        return res.send(err);
-      }
+      (err) ? res.send(err) : res.json({ message: 'Dinosaur updated!' });
+    })
+  })
+})
 
-      res.json({ message: 'Dinosaur updated!' });
-    });
-  });
-});
+router.route('/dinosaurs/:name').get(function(req, res) {
+  Dinosaur.findOne({ name: req.params.name}, function(err, dinosaur) {
+    (err) ? res.status(404).send(err) : res.json(dinosaur)
+  })
+})
 
-router.route('/dinosaurs/:id').get(function(req, res) {
-  Dinosaur.findOne({ _id: req.params.id}, function(err, dinosaur) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.json(dinosaur);
-  });
-});
-
-router.route('/dinosaurs/:id').delete(function(req, res) {
-  Dinosaur.remove({
-    _id: req.params.id
-  }, function(err, dinosaur) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.json({ message: 'Dinosaur deleted' });
-  });
-});
+router.route('/dinosaurs/:name').delete(function(req, res) {
+  Dinosaur.remove({name: req.params.name}, function(err, dinosaur) {
+    (err) ? res.send(err) : res.json({ message: 'Dinosaur deleted' })
+  })
+})
 
 
 module.exports = router
