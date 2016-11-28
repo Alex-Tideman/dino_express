@@ -26,24 +26,30 @@ router.get('/about', function (req, res) {
   res.send('About dinosaurs')
 })
 
-router.get('/dinoList', function (req, res) {
-   fs.readFile( __dirname + "/" + "/dinos.json", 'utf8', function (err, data) {
+router.get('/list', function (req, res) {
+   fs.readFile( __dirname + "/dinos.json", 'utf8', function (err, data) {
        res.send( data );
    });
 })
 
 router.get('/:id', function (req, res) {
    fs.readFile( __dirname + "/" + "dinos.json", 'utf8', function (err, data) {
-    dinos = JSON.parse( data );
+    let dinos = JSON.parse( data );
     var dino = dinos["dino" + req.params.id]
     res.end( JSON.stringify(dino));
   });
 })
 
-router.post('/addDino', function (req, res) {
-  console.log(req.body)
-  res.redirect('/dinosaurs')
-})
+// router.post('/', function (req, res) {
+//   fs.readFile( __dirname + "/" + "dinos.json", 'utf8', function (err, data) {
+//     let dinos = JSON.parse( data );
+//     let { name, size } = req.params
+//     let json = { id: 4, name, size}
+//     fs.writeFile( __dirname + "/" + "dinos.json", JSON.stringify(json), function (err, data) {
+//       res.sendFile(__dirname + '/index.html')
+//     });
+//   });
+// })
 
 var cb1 = function (req, res, next) {
   console.log('I must find foooooood')
