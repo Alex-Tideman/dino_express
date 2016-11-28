@@ -14,8 +14,7 @@ mongoose.connect(connectionString);
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-app.use('/', dinosaurs)
-
+app.use('/dinosaurs', dinosaurs)
 
 var port_number = process.env.PORT || 3000
 

@@ -1,7 +1,6 @@
 var Dinosaur = require('../models/dinosaur');
 var express = require('express');
 var router = express.Router();
-const MongoClient = require('mongodb').MongoClient
 
 var bodyParser = require('body-parser');
 var fs = require('fs')
@@ -12,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // define the home page route
 
-router.route('/dinosaurs').get(function(req, res) {
+router.get('/', function(req, res) {
     Dinosaur.find(function(err, dinos) {
       if (err) {
         res.send(err)
@@ -22,11 +21,7 @@ router.route('/dinosaurs').get(function(req, res) {
   })
 })
 
-router.route('/about').get(function(req, res) {
-  res.send('About the dinosaurs API. Add, edit and delete dinosaurs.')
-})
-
-router.route('/dinosaurs').post(function(req, res) {
+router.post('/', function(req, res) {
   var dinosaur = new Dinosaur(req.body);
 
   dinosaur.save(function(err) {
@@ -39,7 +34,7 @@ router.route('/dinosaurs').post(function(req, res) {
   })
 })
 
-router.route('/dinosaurs/:name').put(function(req,res){
+router.put('/:name', function(req,res){
   Dinosaur.findOne({ name: req.params.name }, function(err, dinosaur) {
     if (err) {
      res.send(err)
@@ -59,7 +54,7 @@ router.route('/dinosaurs/:name').put(function(req,res){
   })
 })
 
-router.route('/dinosaurs/:name').get(function(req, res) {
+router.get('/:name', function(req, res) {
   Dinosaur.findOne({ name: req.params.name}, function(err, dinosaur) {
     if (err) {
       res.status(404).send(err)
@@ -68,7 +63,7 @@ router.route('/dinosaurs/:name').get(function(req, res) {
   })
 })
 
-router.route('/dinosaurs/:name').delete(function(req, res) {
+router.delete('/:name', function(req, res) {
   Dinosaur.remove({name: req.params.name}, function(err, dinosaur) {
     if (err) {
       res.send(err)
