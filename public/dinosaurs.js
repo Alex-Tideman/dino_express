@@ -7,6 +7,8 @@ var app = express()
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-app.get('/')
+router.get('/', function (req, res) {
+  res.sendFile(__dirname + '/index.html')
+})
 
 module.exports = router
