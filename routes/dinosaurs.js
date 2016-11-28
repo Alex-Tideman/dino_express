@@ -1,6 +1,7 @@
 var Dinosaur = require('../models/dinosaur');
 var express = require('express');
 var router = express.Router();
+const MongoClient = require('mongodb').MongoClient
 
 var bodyParser = require('body-parser');
 var fs = require('fs')
@@ -13,7 +14,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 router.route('/dinosaurs').get(function(req, res) {
     Dinosaur.find(function(err, dinos) {
-      (err) ? res.send(err) : res.json(dinos)
+      if (err) {
+        res.send(err)
+      }
+      // res.render(view, locals)
+      res.render('index.ejs', {dinosaurs: dinos})
   })
 })
 
@@ -21,12 +26,16 @@ router.route('/about').get(function(req, res) {
   res.send('About the dinosaurs API. Add, edit and delete dinosaurs.')
 })
 
-
 router.route('/dinosaurs').post(function(req, res) {
   var dinosaur = new Dinosaur(req.body);
 
   dinosaur.save(function(err) {
-    (err) ? res.send(err) : res.send({ message: 'Dinosaur Added' })
+    if (err) {
+      res.send(err)
+    }
+    Dinosaur.find(function(err, dinos) {
+      res.render('index.ejs', {dinosaurs: dinos})
+    })
   })
 })
 
@@ -42,20 +51,31 @@ router.route('/dinosaurs/:name').put(function(req,res){
 
     // Save the dinosaur
     dinosaur.save(function(err) {
-      (err) ? res.send(err) : res.json({ message: 'Dinosaur updated!' });
+      if (err) {
+        res.send(err)
+      }
+      res.json({ message: 'Dinosaur updated!' });
     })
   })
 })
 
 router.route('/dinosaurs/:name').get(function(req, res) {
   Dinosaur.findOne({ name: req.params.name}, function(err, dinosaur) {
-    (err) ? res.status(404).send(err) : res.json(dinosaur)
+    if (err) {
+      res.status(404).send(err)
+    }
+    res.json(dinosaur)
   })
 })
 
 router.route('/dinosaurs/:name').delete(function(req, res) {
   Dinosaur.remove({name: req.params.name}, function(err, dinosaur) {
-    (err) ? res.send(err) : res.json({ message: 'Dinosaur deleted' })
+    if (err) {
+      res.send(err)
+    } else if (!dinosaur) {
+      res.send('Dino does not exist!')
+    }
+    res.json({ message: 'Dinosaur deleted' })
   })
 })
 

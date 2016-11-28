@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dino Express</title>
+</head>
+<body>
+  <h1>All the Dinosaurs</h1>
+  <form action="/dinosaurs" method="POST">
+    <input type="text" placeholder="name" name="name">
+    <input type="text" placeholder="size" name="size">
+    <input type="text" placeholder="food" name="food">
+    <button type="submit">Submit</button>
+  </form>
+  <ul class="dinosaurs">
+    <% for(var i=0; i<dinosaurs.length; i++) {%>
+      <li class="dinosaur">
+        <span><%= dinosaurs[i].name %>
+                  is <%= dinosaurs[i].size %>
+                  and eats <%= dinosaurs[i].food %>
+        </span><br />
+        <a href="/dinosaurs/<%= dinosaurs[i].name %>">View</a>
+      </li>
+    <% } %>
+  </ul>
+</body>
+</html>
